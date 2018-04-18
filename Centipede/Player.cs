@@ -19,7 +19,7 @@ namespace Centipede
         Bullet bullet;
         List<Bullet> bullets;
 
-        int radarDistance = 100;
+        int collisionRadarDistance = 100;
         Vector2[] collisionRadar = { Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero };
         #endregion
 
@@ -106,7 +106,7 @@ namespace Centipede
                 {
                     bool hasCollision = LineRectangle(
                         new Vector2(Rectangle.Center.X, Rectangle.Center.Y),
-                        new Vector2(Rectangle.Center.X + xy[j, 0] * radarDistance, Rectangle.Center.Y + xy[j, 1] * radarDistance),
+                        new Vector2(Rectangle.Center.X + xy[j, 0] * collisionRadarDistance, Rectangle.Center.Y + xy[j, 1] * collisionRadarDistance),
                         mushroom,
                         out Vector2 intersection, out Vector2 dummy);
                     if (hasCollision)
