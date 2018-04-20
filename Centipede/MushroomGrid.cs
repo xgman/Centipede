@@ -10,7 +10,7 @@ namespace Centipede
         List<Mushroom> mushrooms;
         Random random = new Random();
 
-        public MushroomGrid(SpriteBatch spriteBatch, Texture2D texture)
+        public MushroomGrid(SpriteBatch spriteBatch, Mushroom mushroom)
         {
             mushrooms = new List<Mushroom>();
 
@@ -19,7 +19,9 @@ namespace Centipede
                 int x, y;
                 x = random.Next(30);
                 y = random.Next(2, 29);
-                mushrooms.Add(new Mushroom(spriteBatch, texture, new Vector2(x * GameConstants.SpriteSize, y * GameConstants.SpriteSize)));
+                Mushroom m = new Mushroom(spriteBatch, mushroom.Texture, mushroom.SpriteWidth, mushroom.SpriteHeight,
+                    new Vector2(x * mushroom.SpriteWidth, y * mushroom.SpriteHeight));
+                mushrooms.Add(m);
             }
         }
         public void Draw()

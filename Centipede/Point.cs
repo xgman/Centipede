@@ -6,7 +6,8 @@ namespace Centipede
 {
     class Point : Sprite
     {
-        public Point(SpriteBatch spriteBatch, Texture2D texture, Vector2 position) : base(spriteBatch, texture, position)
+        public Point(SpriteBatch spriteBatch, Texture2D texture, int spriteWidth, int spriteHeight, Vector2 position) :
+            base(spriteBatch, texture, spriteWidth, spriteHeight, position)
         {
         }
     }

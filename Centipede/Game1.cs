@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,7 +14,10 @@ namespace Centipede
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Point point;
+        Bullet bullet;
         Player player;
+        Mushroom mushroom;
         MushroomGrid mushroomGrid;
 
         public Game1()
@@ -45,14 +50,14 @@ namespace Centipede
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            player = new Player(
-                spriteBatch,
-                Content.Load<Texture2D>(@"graphics\player"),
-                Content.Load<Texture2D>(@"graphics\point"),
-                Content.Load<Texture2D>(@"graphics\bullet"),
-                new Vector2(GameConstants.WindowWidth / 2 - GameConstants.SpriteSize / 2, GameConstants.WindowHeight - GameConstants.SpriteSize));
+            point = new Point(spriteBatch, Content.Load<Texture2D>(@"graphics\point"), 1, 1, Vector2.Zero);
+            bullet = new Bullet(spriteBatch, Content.Load<Texture2D>(@"graphics\bullet"), 1, 4, Vector2.Zero);
 
-            mushroomGrid = new MushroomGrid(spriteBatch, Content.Load<Texture2D>(@"graphics\mushroom"));
+            player = new Player(spriteBatch, Content.Load<Texture2D>(@"graphics\player"), 24, 24,
+                new Vector2(GameConstants.WindowWidth / 2 - 12, GameConstants.WindowHeight - 12), point, bullet);
+
+            mushroom = new Mushroom(spriteBatch, Content.Load<Texture2D>(@"graphics\mushroom"), 24, 24, Vector2.Zero);
+            mushroomGrid = new MushroomGrid(spriteBatch, mushroom);
 
             Mouse.SetPosition(player.Rectangle.Center.X, player.Rectangle.Center.Y);
         }

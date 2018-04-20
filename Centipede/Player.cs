@@ -24,11 +24,11 @@ namespace Centipede
         #endregion
 
         #region Constructors
-        public Player(SpriteBatch spriteBatch, Texture2D texture, Texture2D pointTexture, Texture2D bulletTexture, Vector2 position) :
-            base(spriteBatch, texture, position)
+        public Player(SpriteBatch spriteBatch, Texture2D texture, int spriteWidth, int spriteHeight, Vector2 position, Point point, Bullet bullet) :
+            base(spriteBatch, texture, spriteWidth, spriteHeight, position)
         {
-            point = new Point(spriteBatch, pointTexture, Vector2.Zero);
-            bullet = new Bullet(spriteBatch, bulletTexture, Vector2.Zero);
+            this.point = new Point(spriteBatch, point.Texture, point.SpriteWidth, point.SpriteHeight, Vector2.Zero);
+            this.bullet = new Bullet(spriteBatch, bullet.Texture, bullet.SpriteWidth, bullet.SpriteHeight, Vector2.Zero);
         }
         #endregion
 
@@ -38,9 +38,9 @@ namespace Centipede
         #region Public methods
         public void Update(GameTime gameTime, MouseState mouseState, MushroomGrid mushroomGrid)
         {
-            float dx = mouseState.X - Rectangle.Center.X;
-            float dy = mouseState.Y - Rectangle.Center.Y;
-            Console.WriteLine(mouseState.Position + ";" + dx + ";" + dy);
+            float dx = mouseState.X - rectangle.Center.X;
+            float dy = mouseState.Y - rectangle.Center.Y;
+            //Console.WriteLine(mouseState.Position + ";" + dx + ";" + dy);
 
             Vector2[] collisions = CheckCollisionWithMushrooms(mushroomGrid);
 
@@ -50,7 +50,7 @@ namespace Centipede
                 if (collisions[LEFT] != Vector2.Zero && rectangle.X < collisions[LEFT].X)
                     rectangle.X = (int)collisions[LEFT].X;
                 if (collisions[RIGHT] != Vector2.Zero && rectangle.Right > collisions[RIGHT].X)
-                    rectangle.X = (int)collisions[RIGHT].X - GameConstants.SpriteSize;
+                    rectangle.X = (int)collisions[RIGHT].X - rectangle.Width;
             }
             if (dy < 0 || dy > 0)
             {
@@ -58,7 +58,7 @@ namespace Centipede
                 if (collisions[TOP] != Vector2.Zero && rectangle.Y < collisions[TOP].Y)
                     rectangle.Y = (int)collisions[TOP].Y;
                 if (collisions[BOTTOM] != Vector2.Zero && rectangle.Bottom > collisions[BOTTOM].Y)
-                    rectangle.Y = (int)collisions[BOTTOM].Y - GameConstants.SpriteSize;
+                    rectangle.Y = (int)collisions[BOTTOM].Y - rectangle.Height;
             }
 
             // clamp player in window
@@ -68,8 +68,8 @@ namespace Centipede
             if (rectangle.Right > GameConstants.WindowWidth)
                 rectangle.X = GameConstants.WindowWidth - rectangle.Width;
 
-            if (rectangle.Y < (GameConstants.WindowHeight - GameConstants.PlayerClampHeight))
-                rectangle.Y = GameConstants.WindowHeight - GameConstants.PlayerClampHeight;
+            if (rectangle.Y < GameConstants.PlayerClampHeight)
+                rectangle.Y = GameConstants.PlayerClampHeight;
 
             if (rectangle.Bottom > GameConstants.WindowHeight)
                 rectangle.Y = GameConstants.WindowHeight - rectangle.Height;
@@ -105,15 +105,15 @@ namespace Centipede
                 for (int j = 0; j < xy.GetLength(0); j++)
                 {
                     bool hasCollision = LineRectangle(
-                        new Vector2(Rectangle.Center.X, Rectangle.Center.Y),
-                        new Vector2(Rectangle.Center.X + xy[j, 0] * collisionRadarDistance, Rectangle.Center.Y + xy[j, 1] * collisionRadarDistance),
+                        new Vector2(rectangle.Center.X, rectangle.Center.Y),
+                        new Vector2(rectangle.Center.X + xy[j, 0] * collisionRadarDistance, rectangle.Center.Y + xy[j, 1] * collisionRadarDistance),
                         mushroom,
                         out Vector2 intersection, out Vector2 dummy);
                     if (hasCollision)
                     {
                         if (collisions[j] == Vector2.Zero ||
-                            Vector2.Distance(new Vector2(Rectangle.Center.X, Rectangle.Center.Y), intersection) <
-                            Vector2.Distance(new Vector2(Rectangle.Center.X, Rectangle.Center.Y), collisions[j]))
+                            Vector2.Distance(new Vector2(rectangle.Center.X, rectangle.Center.Y), intersection) <
+                            Vector2.Distance(new Vector2(rectangle.Center.X, rectangle.Center.Y), collisions[j]))
                         {
                             collisions[j].X = intersection.X;
                             collisions[j].Y = intersection.Y;

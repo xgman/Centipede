@@ -10,7 +10,6 @@ namespace Centipede
     {
         public const int WindowWidth = 720;
         public const int WindowHeight = 720;
-        public const int SpriteSize = 24;
-        public const int PlayerClampHeight = SpriteSize * 7;
+        public const int PlayerClampHeight = GameConstants.WindowHeight - 24 * 7;
     }
 }
