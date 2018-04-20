@@ -14,11 +14,18 @@ namespace Centipede
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        static public Texture2D pointSprite;
+        static public Texture2D bulletSprite;
+        static public Texture2D playerSprite;
+        static public Texture2D mushroomSprite;
+
         Point point;
         Bullet bullet;
         Player player;
         Mushroom mushroom;
         MushroomGrid mushroomGrid;
+
+
 
         public Game1()
         {
@@ -48,13 +55,18 @@ namespace Centipede
         /// </summary>
         protected override void LoadContent()
         {
+            // create a new SpriteBatch, which can be used to draw textures
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            point = new Point(spriteBatch, Content.Load<Texture2D>(@"graphics\point"), 1, 1, Vector2.Zero);
-            bullet = new Bullet(spriteBatch, Content.Load<Texture2D>(@"graphics\bullet"), 1, 4, Vector2.Zero);
+            // load sprites
+            pointSprite = Content.Load<Texture2D>(@"graphics\point");
+            bulletSprite = Content.Load<Texture2D>(@"graphics\bullet");
+            playerSprite = Content.Load<Texture2D>(@"graphics\player");
+            mushroomSprite = Content.Load<Texture2D>(@"graphics\mushroom");
 
-            player = new Player(spriteBatch, Content.Load<Texture2D>(@"graphics\player"), 24, 24,
-                new Vector2(GameConstants.WindowWidth / 2 - 12, GameConstants.WindowHeight - 12), point, bullet);
+            // add initial game objects
+            player = new Player(spriteBatch, playerSprite, 24, 24,
+                new Vector2(GameConstants.WindowWidth / 2 - 12, GameConstants.WindowHeight - 12));
 
             mushroom = new Mushroom(spriteBatch, Content.Load<Texture2D>(@"graphics\mushroom"), 24, 24, Vector2.Zero);
             mushroomGrid = new MushroomGrid(spriteBatch, mushroom);
