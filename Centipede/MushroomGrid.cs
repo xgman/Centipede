@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Centipede
 {
-    class MushroomGrid
+    public class MushroomGrid
     {
         List<Mushroom> mushrooms;
         Random random = new Random();

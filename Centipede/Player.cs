@@ -7,15 +7,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Centipede
 {
-    class Player : Sprite
+    public class Player : Sprite
     {
         #region Fields
         const int LEFT = 0;
         const int TOP = 1;
         const int RIGHT = 2;
         const int BOTTOM = 3;
-
-        List<Bullet> bullets = new List<Bullet>();
 
         bool canShoot = false;
 
@@ -36,20 +34,19 @@ namespace Centipede
         #region Public methods
         public void Update(GameTime gameTime, MouseState mouseState, MushroomGrid mushroomGrid)
         {
-            foreach (Bullet bullet in bullets)
-                bullet.Update(gameTime);
-
             float dx = mouseState.X - rectangle.Center.X;
             float dy = mouseState.Y - rectangle.Center.Y;
             //Console.WriteLine(mouseState.Position + ";" + dx + ";" + dy);
 
             if (mouseState.LeftButton == ButtonState.Released)
+            {
                 canShoot = true;
+            }
             if (mouseState.LeftButton == ButtonState.Pressed && canShoot)
             {
                 canShoot = false;
                 Bullet bullet = new Bullet(spriteBatch, Game1.bulletSprite, 3, 15, new Vector2(rectangle.Center.X - 1, rectangle.Center.Y - 3));
-                bullets.Add(bullet);
+                Game1.AddBullet(bullet);
             }
 
             Vector2[] collisions = CheckCollisionWithMushrooms(mushroomGrid);
@@ -90,10 +87,10 @@ namespace Centipede
             for (int i = 0; i < collisionRadar.Length; i++)
             {
                 if (collisionRadar[i] != Vector2.Zero)
+                {
                     DrawCircle(spriteBatch, collisionRadar[i], 5, Color.White, 1);
+                }
             }
-            foreach (Bullet bullet in bullets)
-                bullet.Draw();
         }
         #endregion
 

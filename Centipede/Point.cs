@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Centipede
 {
-    class Point : Sprite
+    public class Point : Sprite
     {
         public Point(SpriteBatch spriteBatch, Texture2D texture, int spriteWidth, int spriteHeight, Vector2 position) :
             base(spriteBatch, texture, spriteWidth, spriteHeight, position)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,18 +15,17 @@ namespace Centipede
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        // Saved so they don't have to be loaded every time sprites are created
         static public Texture2D pointSprite;
         static public Texture2D bulletSprite;
         static public Texture2D playerSprite;
         static public Texture2D mushroomSprite;
 
-        Point point;
-        Bullet bullet;
         Player player;
         Mushroom mushroom;
         MushroomGrid mushroomGrid;
 
-
+        static List<Bullet> bullets = new List<Bullet>();
 
         public Game1()
         {
@@ -67,8 +67,7 @@ namespace Centipede
             // add initial game objects
             player = new Player(spriteBatch, playerSprite, 24, 24,
                 new Vector2(GameConstants.WindowWidth / 2 - 12, GameConstants.WindowHeight - 12));
-
-            mushroom = new Mushroom(spriteBatch, Content.Load<Texture2D>(@"graphics\mushroom"), 24, 24, Vector2.Zero);
+            mushroom = new Mushroom(spriteBatch, mushroomSprite, 24, 24, Vector2.Zero);
             mushroomGrid = new MushroomGrid(spriteBatch, mushroom);
 
             Mouse.SetPosition(player.Rectangle.Center.X, player.Rectangle.Center.Y);
@@ -93,7 +92,23 @@ namespace Centipede
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) { Exit(); }
 
             MouseState mouseState = Mouse.GetState();
+
             player.Update(gameTime, mouseState, mushroomGrid);
+
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Update(gameTime);
+            }
+
+            // clean out inactive bullets
+            for (int i = bullets.Count - 1; i >= 0; i--)
+            {
+                if (!bullets[i].Active)
+                {
+                    bullets.RemoveAt(i);
+                }
+            }
+            Console.WriteLine(bullets.Count);
 
             base.Update(gameTime);
         }
@@ -109,9 +124,17 @@ namespace Centipede
 
             player.Draw();
             mushroomGrid.Draw();
+            foreach (Bullet bullet in bullets)
+            {
+                bullet.Draw();
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+        public static void AddBullet(Bullet bullet)
+        {
+            bullets.Add(bullet);
         }
     }
 }

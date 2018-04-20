@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Centipede
 {
-    class Mushroom : Sprite
+    public class Mushroom : Sprite
     {
         public Mushroom(SpriteBatch spriteBatch, Texture2D texture, int spriteWidth, int spriteHeight, Vector2 position) :
             base(spriteBatch, texture, spriteWidth, spriteHeight, position)
