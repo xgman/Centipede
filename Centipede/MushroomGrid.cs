@@ -17,7 +17,7 @@ namespace Centipede
             {
                 int x, y;
                 x = random.Next(30);
-                y = random.Next(2, 29);
+                y = random.Next(2, 28);
                 Mushroom m = new Mushroom(spriteBatch, mushroom.Texture, mushroom.SpriteWidth, mushroom.SpriteHeight,
                     new Vector2(x * mushroom.SpriteWidth, y * mushroom.SpriteHeight));
                 mushrooms.Add(m);
