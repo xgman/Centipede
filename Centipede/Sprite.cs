@@ -40,7 +40,7 @@ namespace Centipede
 
         public void Draw()
         {
-            spriteBatch.Draw(texture, rectangle, new Rectangle(AnimationState * 24, 0, spriteWidth, spriteHeight),
+            spriteBatch.Draw(texture, rectangle, new Rectangle(AnimationState * spriteWidth, 0, spriteWidth, spriteHeight),
                 Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0.0f);
         }
     }
