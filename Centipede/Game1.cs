@@ -16,10 +16,10 @@ namespace Centipede
         SpriteBatch spriteBatch;
 
         // Saved so they don't have to be loaded every time sprites are created
-        static public Texture2D pointSprite;
-        static public Texture2D bulletSprite;
-        static public Texture2D playerSprite;
-        static public Texture2D mushroomSprite;
+        public static Texture2D pointSprite;
+        public static Texture2D bulletSprite;
+        public static Texture2D playerSprite;
+        public static Texture2D mushroomSprite;
 
         Player player;
         Mushroom mushroom;
