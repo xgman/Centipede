@@ -15,7 +15,7 @@ namespace Centipede
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        // Saved so they don't have to be loaded every time sprites are created
+        // saved so they don't have to be loaded every time sprites are created
         public static Texture2D pointSprite;
         public static Texture2D bulletSprite;
         public static Texture2D playerSprite;
