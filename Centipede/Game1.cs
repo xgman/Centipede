@@ -108,7 +108,7 @@ namespace Centipede
                     bullets.RemoveAt(i);
                 }
             }
-            Console.WriteLine(bullets.Count);
+            //Console.WriteLine(bullets.Count);
 
             base.Update(gameTime);
         }
