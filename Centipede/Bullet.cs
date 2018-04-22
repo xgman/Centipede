@@ -13,7 +13,6 @@ namespace Centipede
         {
             yelocity = -1 * GameConstants.PlayerBulletSpeed;
         }
-
         public void Update(GameTime gameTime)
         {
             // move bullet
@@ -25,7 +24,6 @@ namespace Centipede
                 active = false;
             }
         }
-
         public bool Active { get { return active; } set { active = value; } }
     }
 }

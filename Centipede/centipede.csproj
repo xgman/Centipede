@@ -9,8 +9,8 @@
     <ProjectGuid>{4CD5B40B-AFDC-4075-BD50-8AB971FFFFC8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cent</RootNamespace>
-    <AssemblyName>cent</AssemblyName>
+    <RootNamespace>Centipede</RootNamespace>
+    <AssemblyName>Centipede</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>

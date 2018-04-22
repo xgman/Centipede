@@ -9,7 +9,6 @@ namespace Centipede
             base(spriteBatch, texture, spriteWidth, spriteHeight, position)
         {
         }
-
         public void Shoot()
         {
             animationState++;

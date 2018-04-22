@@ -9,7 +9,6 @@ namespace Centipede
     {
         List<Mushroom> mushrooms;
         Random random = new Random();
-
         public MushroomGrid(SpriteBatch spriteBatch, Mushroom mushroom)
         {
             mushrooms = new List<Mushroom>();
@@ -27,7 +26,9 @@ namespace Centipede
         public void Draw()
         {
             for (int count = 0; count < mushrooms.Count; count++)
+            {
                 mushrooms[count].Draw();
+            }
         }
         public int MushroomCount { get { return mushrooms.Count; } }
         public List<Mushroom> Mushrooms { get { return mushrooms; } }
