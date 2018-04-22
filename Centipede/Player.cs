@@ -17,8 +17,9 @@ namespace Centipede
 
         bool canShoot = false;
 
-        int collisionRadarDistance = 100;
         Vector2[] collisionRadar = { Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero };
+        int collisionRadarDistance = 100;
+        bool collisionRadarDisplay = true;
         #endregion
 
         #region Constructors
@@ -49,23 +50,23 @@ namespace Centipede
                 Game1.AddBullet(bullet);
             }
 
-            Vector2[] collisions = CheckCollisionWithMushrooms(mushroomGrid);
+            CheckCollisionWithMushrooms(mushroomGrid);
 
             if (dx < 0 || dx > 0)
             {
                 rectangle.X += (int)(dx * 0.3);
-                if (collisions[LEFT] != Vector2.Zero && rectangle.X < collisions[LEFT].X)
-                    rectangle.X = (int)collisions[LEFT].X;
-                if (collisions[RIGHT] != Vector2.Zero && rectangle.Right > collisions[RIGHT].X)
-                    rectangle.X = (int)collisions[RIGHT].X - rectangle.Width;
+                if (collisionRadar[LEFT] != Vector2.Zero && rectangle.X < collisionRadar[LEFT].X)
+                    rectangle.X = (int)collisionRadar[LEFT].X;
+                if (collisionRadar[RIGHT] != Vector2.Zero && rectangle.Right > collisionRadar[RIGHT].X)
+                    rectangle.X = (int)collisionRadar[RIGHT].X - rectangle.Width;
             }
             if (dy < 0 || dy > 0)
             {
                 rectangle.Y += (int)(dy * 0.3);
-                if (collisions[TOP] != Vector2.Zero && rectangle.Y < collisions[TOP].Y)
-                    rectangle.Y = (int)collisions[TOP].Y;
-                if (collisions[BOTTOM] != Vector2.Zero && rectangle.Bottom > collisions[BOTTOM].Y)
-                    rectangle.Y = (int)collisions[BOTTOM].Y - rectangle.Height;
+                if (collisionRadar[TOP] != Vector2.Zero && rectangle.Y < collisionRadar[TOP].Y)
+                    rectangle.Y = (int)collisionRadar[TOP].Y;
+                if (collisionRadar[BOTTOM] != Vector2.Zero && rectangle.Bottom > collisionRadar[BOTTOM].Y)
+                    rectangle.Y = (int)collisionRadar[BOTTOM].Y - rectangle.Height;
             }
 
             // clamp player in window
@@ -83,21 +84,27 @@ namespace Centipede
         }
         public new void Draw()
         {
+            // calls draw method in base class (Sprite) 
             base.Draw();
-            for (int i = 0; i < collisionRadar.Length; i++)
+
+            // collisionRadar visibility can be turned on or off
+            if (collisionRadarDisplay)
             {
-                if (collisionRadar[i] != Vector2.Zero)
+                for (int i = 0; i < collisionRadar.Length; i++)
                 {
-                    DrawCircle(spriteBatch, collisionRadar[i], 5, Color.White, 1);
+                    if (collisionRadar[i] != Vector2.Zero)
+                    {
+                        DrawLine(spriteBatch, new Vector2(Rectangle.Center.X, Rectangle.Center.Y), collisionRadar[i], Color.Wheat, 1);
+                        DrawCircle(spriteBatch, collisionRadar[i], 5, Color.White, 1);
+                    }
                 }
             }
         }
         #endregion
 
         #region Private methods
-        private Vector2[] CheckCollisionWithMushrooms(MushroomGrid mushroomGrid)
+        private void CheckCollisionWithMushrooms(MushroomGrid mushroomGrid)
         {
-            Vector2[] collisions = new Vector2[4] { Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero };
             int[,] xy = new int[,] { { -1, 0 }, { 0, -1 }, { 1, 0 }, { 0, 1 } };
 
             for (int i = 0; i < collisionRadar.Length; i++)
@@ -108,7 +115,7 @@ namespace Centipede
                 Rectangle mushroom = mushroomGrid.Mushroom(i).Rectangle;
 
                 // unnecessary to check for mushroom collisions above PlayerClampHeight
-                if (mushroom.Bottom < GameConstants.WindowHeight - GameConstants.PlayerClampHeight)
+                if (mushroom.Bottom < GameConstants.PlayerClampHeight)
                     continue;
 
                 for (int j = 0; j < xy.GetLength(0); j++)
@@ -120,19 +127,16 @@ namespace Centipede
                         out Vector2 intersection, out Vector2 dummy);
                     if (hasCollision)
                     {
-                        if (collisions[j] == Vector2.Zero ||
+                        if (collisionRadar[j] == Vector2.Zero ||
                             Vector2.Distance(new Vector2(rectangle.Center.X, rectangle.Center.Y), intersection) <
-                            Vector2.Distance(new Vector2(rectangle.Center.X, rectangle.Center.Y), collisions[j]))
+                            Vector2.Distance(new Vector2(rectangle.Center.X, rectangle.Center.Y), collisionRadar[j]))
                         {
-                            collisions[j].X = intersection.X;
-                            collisions[j].Y = intersection.Y;
                             collisionRadar[j].X = intersection.X;
                             collisionRadar[j].Y = intersection.Y;
                         }
                     }
                 }
             }
-            return collisions;
         }
 
         // a1 is line1 start, a2 is line1 end, rec is colliding rectangle, b1 is clipped line start, b2 is clipped line end
