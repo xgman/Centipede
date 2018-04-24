@@ -20,12 +20,15 @@ namespace Centipede
         public static Texture2D bulletSprite;
         public static Texture2D playerSprite;
         public static Texture2D mushroomSprite;
+        public static Texture2D scoreSprite;
 
         Player player;
         Mushroom mushroom;
         MushroomGrid mushroomGrid;
+        Score score;
 
         static List<Bullet> bullets = new List<Bullet>();
+        static int scoreValue = 0;
 
         public Game1()
         {
@@ -63,12 +66,14 @@ namespace Centipede
             bulletSprite = Content.Load<Texture2D>(@"graphics\bullet");
             playerSprite = Content.Load<Texture2D>(@"graphics\player");
             mushroomSprite = Content.Load<Texture2D>(@"graphics\mushroom");
+            scoreSprite = Content.Load<Texture2D>(@"graphics\score");
 
             // add initial game objects
             player = new Player(spriteBatch, playerSprite, 24, 24,
                 new Vector2(GameConstants.WindowWidth / 2 - 12, GameConstants.WindowHeight - 12));
             mushroom = new Mushroom(spriteBatch, mushroomSprite, 24, 24, Vector2.Zero);
             mushroomGrid = new MushroomGrid(spriteBatch, mushroom);
+            score = new Score(spriteBatch, scoreSprite, 21, 21, Vector2.Zero);
 
             Mouse.SetPosition(player.Rectangle.Center.X, player.Rectangle.Center.Y);
         }
@@ -129,12 +134,18 @@ namespace Centipede
                 bullet.Draw();
             }
 
+            score.Draw(scoreValue);
+
             spriteBatch.End();
             base.Draw(gameTime);
         }
         public static void AddBullet(Bullet bullet)
         {
             bullets.Add(bullet);
+        }
+        public static void AddScore(int score)
+        {
+            scoreValue += score;
         }
     }
 }

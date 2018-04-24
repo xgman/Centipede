@@ -86,7 +86,6 @@ namespace Centipede
         {
             // calls draw method in base class (Sprite) 
             base.Draw();
-
             // collisionRadar visibility can be turned on or off
             if (collisionRadarDisplay)
             {
