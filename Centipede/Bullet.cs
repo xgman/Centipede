@@ -15,6 +15,7 @@ namespace Centipede
         }
         public void Update(GameTime gameTime)
         {
+
             // move bullet
             rectangle.Y += (int)(yelocity * gameTime.ElapsedGameTime.Milliseconds);
 

@@ -7,7 +7,7 @@ namespace Centipede
 {
     public class MushroomGrid
     {
-        List<Mushroom> mushrooms;
+        public static List<Mushroom> mushrooms;
         Random random = new Random();
         public MushroomGrid(SpriteBatch spriteBatch, Mushroom mushroom)
         {

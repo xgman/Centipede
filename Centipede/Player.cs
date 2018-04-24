@@ -19,7 +19,7 @@ namespace Centipede
 
         Vector2[] collisionRadar = { Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero };
         int collisionRadarDistance = 100;
-        bool collisionRadarDisplay = false;
+        bool collisionRadarDisplay = true;
         #endregion
 
         #region Constructors

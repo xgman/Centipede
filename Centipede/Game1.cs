@@ -21,11 +21,15 @@ namespace Centipede
         public static Texture2D playerSprite;
         public static Texture2D mushroomSprite;
 
+        static Random random = new Random();
+
+        Wurmhead wurmhead;
         Player player;
         Mushroom mushroom;
         MushroomGrid mushroomGrid;
 
         static List<Bullet> bullets = new List<Bullet>();
+        static List<Wurmhead> wurmheads = new List<Wurmhead>();
 
         public Game1()
         {
@@ -33,7 +37,7 @@ namespace Centipede
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = GameConstants.WindowWidth;
             graphics.PreferredBackBufferHeight = GameConstants.WindowHeight;
-            //IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         /// <summary>
@@ -67,6 +71,8 @@ namespace Centipede
             // add initial game objects
             player = new Player(spriteBatch, playerSprite, 24, 24,
                 new Vector2(GameConstants.WindowWidth / 2 - 12, GameConstants.WindowHeight - 12));
+
+            wurmheads.Add(new Wurmhead(spriteBatch, playerSprite, 24, 24, new Vector2(random.Next(0, 31) * 24, 0)));
             mushroom = new Mushroom(spriteBatch, mushroomSprite, 24, 24, Vector2.Zero);
             mushroomGrid = new MushroomGrid(spriteBatch, mushroom);
 
@@ -93,12 +99,37 @@ namespace Centipede
 
             MouseState mouseState = Mouse.GetState();
 
+           
+
+            foreach (Wurmhead wurmhead in wurmheads)
+            {
+                wurmhead.Update(gameTime);
+            }
+
             player.Update(gameTime, mouseState, mushroomGrid);
 
             foreach (Bullet bullet in bullets)
             {
                 bullet.Update(gameTime);
             }
+
+            foreach (Bullet bullet in bullets)
+            {
+
+                    for (int count = 0; count < MushroomGrid.mushrooms.Count; count++)
+                    {
+                        if (bullet.Rectangle.Intersects(MushroomGrid.mushrooms[count].Rectangle))
+                        {
+                            bullet.Active = false;
+                            MushroomGrid.mushrooms[count].Shot();
+                            if (mushroomGrid.Mushrooms[count].AnimationState == 5) MushroomGrid.mushrooms.RemoveAt(count);
+
+
+                        }
+                    }
+                
+            }
+
 
             // clean out inactive bullets
             for (int i = bullets.Count - 1; i >= 0; i--)
@@ -126,7 +157,11 @@ namespace Centipede
             mushroomGrid.Draw();
             foreach (Bullet bullet in bullets)
             {
-                bullet.Draw();
+               bullet.Draw();
+            }
+            foreach (Wurmhead wurmhead in wurmheads)
+            {
+                wurmhead.Draw();
             }
 
             spriteBatch.End();
@@ -135,6 +170,7 @@ namespace Centipede
         public static void AddBullet(Bullet bullet)
         {
             bullets.Add(bullet);
+
         }
     }
 }
