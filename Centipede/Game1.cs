@@ -24,15 +24,15 @@ namespace Centipede
 
         static Random random = new Random();
 
-        Wurmhead wurmhead;
         Player player;
         Mushroom mushroom;
         MushroomGrid mushroomGrid;
+        Wurmhead wurmhead;
         Score score;
 
         static List<Bullet> bullets = new List<Bullet>();
-        static int scoreValue = 0;
         static List<Wurmhead> wurmheads = new List<Wurmhead>();
+        static int scoreValue = 0;
 
         public Game1()
         {
