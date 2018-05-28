@@ -8,6 +8,7 @@ namespace Centipede
         protected SpriteBatch spriteBatch;
         protected Rectangle rectangle;
         protected Texture2D texture;
+
         protected int animationState;
         protected int spriteWidth;
         protected int spriteHeight;
@@ -38,7 +39,7 @@ namespace Centipede
 
         public int AnimationState { get { return animationState; } set { animationState = value; } }
 
-        public void Draw()
+        public virtual void Draw()
         {
             spriteBatch.Draw(texture, rectangle, new Rectangle(AnimationState * spriteWidth, 0, spriteWidth, spriteHeight),
                 Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0.0f);

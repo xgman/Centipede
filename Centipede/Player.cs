@@ -15,11 +15,12 @@ namespace Centipede
         const int RIGHT = 2;
         const int BOTTOM = 3;
 
+        bool active = true;
         bool canShoot = false;
 
         Vector2[] collisionRadar = { Vector2.Zero, Vector2.Zero, Vector2.Zero, Vector2.Zero };
         int collisionRadarDistance = 100;
-        bool collisionRadarDisplay = true;
+        bool collisionRadarDisplay = false;
         #endregion
 
         #region Constructors
@@ -35,6 +36,9 @@ namespace Centipede
         #region Public methods
         public void Update(GameTime gameTime, MouseState mouseState, MushroomGrid mushroomGrid)
         {
+            if(active)
+            {
+                
             float dx = mouseState.X - rectangle.Center.X;
             float dy = mouseState.Y - rectangle.Center.Y;
             //Console.WriteLine(mouseState.Position + ";" + dx + ";" + dy);
@@ -81,6 +85,8 @@ namespace Centipede
 
             if (rectangle.Bottom > GameConstants.WindowHeight)
                 rectangle.Y = GameConstants.WindowHeight - rectangle.Height;
+            }
+
         }
         public new void Draw()
         {
@@ -223,5 +229,7 @@ namespace Centipede
                 0);
         }
         #endregion
+
+        public bool Active { get { return active; } set { active = value; } }
     }
 }

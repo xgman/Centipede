@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Diagnostics;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,6 +26,7 @@ namespace Centipede
         public static Texture2D playerSprite;
         public static Texture2D mushroomSprite;
         public static Texture2D scoreSprite;
+        public static Texture2D wurmHead;
 
         static Random random = new Random();
 
@@ -32,6 +38,7 @@ namespace Centipede
 
         static List<Bullet> bullets = new List<Bullet>();
         static List<Wurmhead> wurmheads = new List<Wurmhead>();
+
         static int scoreValue = 0;
 
         public Game1()
@@ -71,12 +78,13 @@ namespace Centipede
             playerSprite = Content.Load<Texture2D>(@"graphics\player");
             mushroomSprite = Content.Load<Texture2D>(@"graphics\mushroom");
             scoreSprite = Content.Load<Texture2D>(@"graphics\score");
+            wurmHead = Content.Load<Texture2D>(@"graphics\head2");
 
             // add initial game objects
             player = new Player(spriteBatch, playerSprite, 24, 24,
                 new Vector2(GameConstants.WindowWidth / 2 - 12, GameConstants.WindowHeight - 12));
 
-            wurmheads.Add(new Wurmhead(spriteBatch, playerSprite, 24, 24, new Vector2(random.Next(0, 31) * 24, 0)));
+            wurmheads.Add(new Wurmhead(spriteBatch, wurmHead, 24, 24, new Vector2(random.Next(0, 31) * 24, 24), random.Next(1, 8)));
             mushroom = new Mushroom(spriteBatch, mushroomSprite, 24, 24, Vector2.Zero);
             mushroomGrid = new MushroomGrid(spriteBatch, mushroom);
             score = new Score(spriteBatch, scoreSprite, 21, 21, Vector2.Zero);
@@ -100,10 +108,20 @@ namespace Centipede
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            
+
+            Console.WriteLine(wurmheads.Count);
+            if(wurmheads.Count == 0) wurmheads.Add(new Wurmhead(spriteBatch, wurmHead,
+                24, 24, new Vector2(random.Next(0, 31) * 24, 24), random.Next(1, 8)));
+
             if (Keyboard.GetState().IsKeyDown(Keys.Escape)) { Exit(); }
 
             MouseState mouseState = Mouse.GetState();
 
+            foreach(Wurmhead wurmhead in wurmheads)
+            {
+                if(player.Rectangle.Contains(wurmhead.Rectangle)) player.Active = false;
+            }
            
 
             foreach (Wurmhead wurmhead in wurmheads)
@@ -135,6 +153,21 @@ namespace Centipede
                 
             }
 
+            foreach(Bullet bullet in bullets)
+            {
+                foreach(Wurmhead wurmhead in wurmheads)
+                {
+                    if(bullet.Rectangle.Intersects(wurmhead.Rectangle))
+                    {
+                        AddScore(300);
+                        bullet.Active = false;
+                        wurmhead.active = false;
+                        
+                    } 
+                }
+            }
+
+            
 
             // clean out inactive bullets
             for (int i = bullets.Count - 1; i >= 0; i--)
@@ -144,7 +177,19 @@ namespace Centipede
                     bullets.RemoveAt(i);
                 }
             }
-            //Console.WriteLine(bullets.Count);
+
+            // clean out inactive wurmheads
+            
+            for (int i = wurmheads.Count - 1; i >= 0; i--)
+            {
+                if (!wurmheads[i].Active)
+                {
+                    wurmheads.RemoveAt(i);
+                }
+            }
+            
+
+
 
             base.Update(gameTime);
         }

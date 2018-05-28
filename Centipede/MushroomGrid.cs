@@ -25,6 +25,7 @@ namespace Centipede
         }
         public void Draw()
         {
+            
             for (int count = 0; count < mushrooms.Count; count++)
             {
                 mushrooms[count].Draw();
